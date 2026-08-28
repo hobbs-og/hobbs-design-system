@@ -1,0 +1,110 @@
+/* ============================================================
+   atoms/button.css — component tokens in practice
+   The variant swaps custom properties; it never touches rules.
+   ============================================================ */
+
+.button {
+  --_bg: var(--button-color-background);
+  --_text: var(--button-color-text);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--button-space-inset-y) var(--button-space-inset-x);
+  border: var(--border-width-hairline) solid transparent;
+  border-radius: var(--button-radius-default);
+  background: var(--_bg);
+  color: var(--_text);
+  font-size: var(--text-size-body);
+  line-height: var(--text-line-height-body);
+  /* Labels are title-cased by the component, not by whoever writes the
+     markup, so "View the work" and "view the work" render identically
+     and a label can't arrive in the wrong case. Worth knowing: this
+     capitalises every word including the small ones, so "View the work"
+     reads "View The Work". If a label needs true title case, the fix is
+     the label, not this rule. */
+  text-transform: capitalize;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-duration-ui) var(--motion-easing-ui),
+    color var(--motion-duration-ui) var(--motion-easing-ui),
+    border-color var(--motion-duration-ui) var(--motion-easing-ui);
+}
+
+.button:hover {
+  --_bg: var(--button-color-background-hover);
+}
+
+.button:active {
+  --_bg: var(--button-color-background-active);
+}
+
+/* Same nudge as .cta's hover icon, but half the distance — the
+   button's inline padding only has --button-space-inset-x of
+   headroom before the icon would spill past the edge. */
+.button .icon {
+  transition: transform var(--motion-duration-ui) var(--motion-easing-ui);
+}
+
+.button:hover .icon {
+  transform: translateX(var(--space-xs));
+}
+
+.button--quiet {
+  --_bg: transparent;
+  --_text: var(--button-color-quiet-text);
+  border-color: currentColor;
+}
+
+/* Solid: the near-black primary. Red stays reserved for the
+   accent; a filled dark button reads calmer at hero scale.
+   border-color: currentColor matches --quiet's approach: a defined
+   edge in the text color, which flips along automatically with
+   --_text through the hover inversion below instead of needing its
+   own hover rule. */
+.button--solid {
+  --_bg: var(--button-color-solid-background);
+  --_text: var(--button-color-solid-text);
+  border-color: currentColor;
+}
+
+/* Hover inverts the button rather than nudging its color one step:
+   background and text swap, so the change is unmistakable even
+   where the resting and "one step darker/lighter" tones are close. */
+.button--solid:hover,
+.button--solid:active {
+  --_bg: var(--button-color-solid-text);
+  --_text: var(--button-color-solid-background);
+}
+
+.button--quiet:hover,
+.button--quiet:active {
+  --_bg: var(--button-color-quiet-text);
+  --_text: var(--button-color-text);
+}
+
+/* Bare: no fill, no border, no inset — for a button that has to sit
+   flush against its surroundings (a sheet's chrome bar) rather than
+   read as a discrete control. Neutral text, not the accent red — a
+   back/close action shouldn't compete with the page's actual links
+   and CTAs for attention. */
+.button--bare {
+  --_bg: transparent;
+  --_text: var(--text-color-default);
+  padding: 0;
+  border-color: transparent;
+}
+
+.button--bare:hover,
+.button--bare:active {
+  --_bg: transparent;
+  --_text: var(--text-color-heading);
+}
+
+.button:disabled,
+.button[aria-disabled='true'] {
+  --_bg: var(--surface-color-alt);
+  --_text: var(--text-color-disabled);
+  cursor: not-allowed;
+}

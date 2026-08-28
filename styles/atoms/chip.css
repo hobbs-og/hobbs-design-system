@@ -1,0 +1,58 @@
+/* ============================================================
+   atoms/chip.css — small informational label
+   Neutral by default, feedback variants for status. No red:
+   the accent is reserved for links and CTAs, and a chip is
+   neither. Variants swap custom properties, never rules.
+   ============================================================ */
+
+.chip {
+  --_bg: var(--chip-color-background);
+  --_text: var(--chip-color-text);
+  --_border: var(--chip-color-border);
+
+  display: inline-flex;
+  align-items: center;
+  padding: var(--chip-space-inset-y) var(--chip-space-inset-x);
+  background: var(--_bg);
+  color: var(--_text);
+  border: var(--border-width-hairline) solid var(--_border);
+  border-radius: var(--chip-radius-default);
+  font-size: var(--text-size-caption);
+  line-height: var(--text-line-height-caption);
+  white-space: nowrap;
+}
+
+.chip--success {
+  --_bg: var(--chip-color-success-background);
+  --_text: var(--chip-color-success-text);
+  --_border: transparent;
+}
+
+.chip--warning {
+  --_bg: var(--chip-color-warning-background);
+  --_text: var(--chip-color-warning-text);
+  --_border: transparent;
+}
+
+.chip--error {
+  --_bg: var(--chip-color-error-background);
+  --_text: var(--chip-color-error-text);
+  --_border: transparent;
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  padding: 0;
+}
+
+/* Forces a wrap at a chosen point instead of leaving the browser
+   to fill each row greedily — which is what produced a lopsided
+   final row (most chips up top, a stray couple left dangling
+   below). A zero-height, full-width flex item breaks the line
+   without adding visible space of its own. */
+.chip-group__break {
+  flex-basis: 100%;
+  block-size: 0;
+}

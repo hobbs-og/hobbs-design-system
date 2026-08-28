@@ -1,0 +1,204 @@
+# @hobbs-og/design-system
+
+The baseline layer behind [hobbs.design](https://hobbs.design): design tokens
+and the CSS primitives built on them. Tokens, element defaults, atoms,
+molecules, and a grid — the parts that are true of any product, extracted so
+they stop being copied.
+
+What is deliberately **not** here: page organisms, layouts, and content
+components. Those belong to the product that renders them. A design system
+that ships someone's hero section isn't a system, it's a theme.
+
+```
+tokens/base/*.json  ──▶  tokens/semantic/*.json  ──▶  tokens/component/*.json
+subatomic                roles                        per-component
+raw values               aliases only                 aliases only
+        │
+        └── Style Dictionary ──▶ dist/tokens.css · tokens.mjs · tokens.d.ts
+                                          │
+                                     styles/ consumes it
+```
+
+---
+
+## Install
+
+```bash
+npm i -D github:hobbs-og/hobbs-design-system#v1.0.0
+```
+
+Pin the tag. `main` is where work happens; tags are what products build against.
+
+`dist/` is committed on purpose — npm runs no build step when installing from a
+git ref, so compiled tokens have to be in the tree or they arrive empty.
+
+## Use
+
+### Plain HTML / no bundler
+
+Copy `styles/`, `dist/`, and `assets/` out of `node_modules` into a vendor
+directory at build time, preserving the relative structure (`styles/base/fonts.css`
+reaches `../../assets/fonts/`). Then one link tag:
+
+```html
+<link rel="stylesheet" href="/vendor/design-system/styles/index.css">
+```
+
+`styles/index.css` pulls in `dist/tokens.css` itself, so that is the only tag
+you need.
+
+### With a bundler
+
+```js
+import '@hobbs-og/design-system/styles'   // tokens + every primitive
+```
+
+Or take the pieces:
+
+```js
+import '@hobbs-og/design-system/tokens.css'
+import '@hobbs-og/design-system/styles/atoms/button.css'
+```
+
+### Token values in JS
+
+```js
+import { colorBrandPrimary500, spaceMd } from '@hobbs-og/design-system'
+```
+
+Typed via `dist/tokens.d.ts`.
+
+---
+
+## The typeface caveat
+
+**Neue Haas Grotesk is not bundled.** It is a licensed Adobe Fonts (Typekit)
+face and cannot be redistributed. The tokens name it; loading it is yours.
+
+Either load your own kit before the stylesheet:
+
+```html
+<link rel="stylesheet" href="https://use.typekit.net/YOUR_KIT.css">
+<link rel="stylesheet" href="/vendor/design-system/styles/index.css">
+```
+
+…or override the family tokens after it:
+
+```css
+:root {
+  --text-family-base: 'Your Face', system-ui, sans-serif;
+  --text-family-display: 'Your Face', system-ui, sans-serif;
+}
+```
+
+The mono **is** bundled — JetBrains Mono, latin subset, weight 400, 21KB, under
+the SIL Open Font License. The licence sits beside the file it covers at
+`assets/fonts/OFL.txt`. It was chosen by measurement, not taste: at the same
+nominal size its x-height is 1.02 and cap-height 0.98 of Neue Haas Grotesk
+Text, so inline `<code>` needs no size correction to sit inside a sentence.
+
+---
+
+## Icons
+
+Bootstrap Icons, but no sprite ships here. Two products on this system
+reference different icons, so the sprite is a per-project artefact — bundling
+one product's would push dead weight to every other.
+
+Write a `<use>` tag with any name from [icons.getbootstrap.com](https://icons.getbootstrap.com):
+
+```html
+<svg class="icon" aria-hidden="true">
+  <use href="/icons.svg#bi-arrow-right"></use>
+</svg>
+```
+
+Then generate a sprite holding only the icons your source actually references:
+
+```bash
+npx hobbs-icons --out public/icons.svg
+```
+
+It scans the directory it runs in (`--scan dir` to narrow it) and fails loudly
+on a name that isn't in the library, rather than emitting a silently empty
+symbol.
+
+---
+
+## Extending it
+
+A product needs component tokens the system doesn't have. Don't fork, and don't
+reach past the semantic layer — add your own component layer that aliases it.
+
+Point your own Style Dictionary config at both token trees, but emit only your
+own. The system's tokens are there so aliases resolve; they are already being
+delivered by `dist/tokens.css`, so re-emitting them would ship every value
+twice and let the two copies drift.
+
+```js
+// style-dictionary.config.mjs, in your product
+const SYSTEM = 'node_modules/@hobbs-og/design-system/tokens'
+
+export default {
+  source: [
+    `${SYSTEM}/base/*.json`,       // for alias resolution only
+    `${SYSTEM}/semantic/*.json`,   // for alias resolution only
+    'tokens/component/*.json',     // yours — the only layer emitted
+  ],
+  platforms: {
+    css: {
+      transformGroup: 'css',
+      buildPath: 'dist/',
+      files: [{
+        destination: 'tokens.local.css',
+        format: 'css/variables',
+        filter: (token) => !token.filePath.startsWith(SYSTEM),
+        options: { outputReferences: true },
+      }],
+    },
+  },
+}
+```
+
+Load `tokens.local.css` after the system stylesheet. hobbs.design does exactly
+this — see its `style-dictionary.config.mjs` for a working copy.
+
+---
+
+## Rules
+
+1. Everything below `base/` uses semantic tokens only. A raw hex or rem value
+   outside `dist/tokens.css` is a bug.
+2. The accent red is links and CTAs only.
+3. Hierarchy comes from size and opacity, not hue or weight.
+4. A component never reaches past the semantic layer. If a rule needs a value
+   the semantic layer doesn't have, the layer is missing a role — that is not
+   permission to use a primitive directly.
+5. Dimensions compile to `rem` (÷16) so user font-size preferences scale the UI.
+   Breakpoints stay `px`: media queries can't read custom properties, so those
+   tokens document values that are duplicated by hand in CSS.
+
+## Working on it
+
+```bash
+npm install
+npm run build:tokens     # tokens/*.json -> dist/
+npm run watch:tokens     # rebuild on change
+```
+
+Commit `dist/` with the token change that produced it — they are one change,
+and consumers install the tree as-is.
+
+### Releasing
+
+```bash
+npm run build:tokens
+git commit -am "…"
+git tag v1.1.0 && git push --follow-tags
+```
+
+Then bump the ref in each consuming product. Semver against the **public
+surface**: custom property names, class names, and the JS export names.
+Renaming or removing any of those is a major.
+
+Deeper background on the token layers lives in [`docs/design-tokens.md`](docs/design-tokens.md).

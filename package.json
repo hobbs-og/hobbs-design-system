@@ -1,0 +1,59 @@
+{
+  "name": "@hobbs-og/design-system",
+  "version": "1.0.0",
+  "description": "Design tokens and CSS primitives behind hobbs.design — the baseline layer for any product built on it.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Mark Hobbs <mark@hobbs.design>",
+  "homepage": "https://hobbs.design",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hobbs-og/hobbs-design-system.git"
+  },
+  "bin": {
+    "hobbs-icons": "tools/build-icons.mjs"
+  },
+  "exports": {
+    ".": "./dist/tokens.mjs",
+    "./tokens.css": "./dist/tokens.css",
+    "./styles": "./styles/index.css",
+    "./styles/*": "./styles/*",
+    "./tokens/*": "./tokens/*",
+    "./assets/*": "./assets/*",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/tokens.mjs",
+  "types": "./dist/tokens.d.ts",
+  "style": "./styles/index.css",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "styles",
+    "tokens",
+    "assets",
+    "tools",
+    "style-dictionary.config.mjs",
+    "docs"
+  ],
+  "scripts": {
+    "build": "npm run build:tokens",
+    "build:tokens": "style-dictionary build --config style-dictionary.config.mjs",
+    "watch:tokens": "style-dictionary build --config style-dictionary.config.mjs --watch",
+    "prepack": "npm run build:tokens"
+  },
+  "dependencies": {
+    "bootstrap-icons": "^1.13.1"
+  },
+  "devDependencies": {
+    "style-dictionary": "^4.3.0"
+  },
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "style-dictionary",
+    "css",
+    "accessibility"
+  ]
+}

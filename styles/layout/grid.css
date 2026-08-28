@@ -1,0 +1,116 @@
+/* ============================================================
+   layout/grid.css — 12-column grid on an 8px foundation
+   Full-bleed by default; .container caps very wide screens.
+   ============================================================ */
+
+.container {
+  max-width: var(--layout-container-max);
+  margin-inline: auto;
+  padding-inline: var(--space-section-x);
+}
+
+.section {
+  padding-block: var(--space-section-y);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-grid-row-gap) var(--space-grid-column-gap);
+}
+
+/* Where columns hold text against text, hang them off a shared
+   baseline rather than a shared top edge — a 40px heading and 16px
+   body sit on one line instead of two unrelated cap heights. Opt-in,
+   because an item with no text baselines off its bottom margin edge,
+   which would drop images out of alignment. */
+.grid--baseline {
+  align-items: baseline;
+}
+
+/* Column spans. Fall to full width on mobile. */
+.span-3  { grid-column: span 3; }
+.span-4  { grid-column: span 4; }
+.span-5  { grid-column: span 5; }
+.span-6  { grid-column: span 6; }
+.span-7  { grid-column: span 7; }
+.span-8  { grid-column: span 8; }
+.span-10 { grid-column: span 10; }
+.span-12 { grid-column: span 12; }
+
+@media (max-width: 64rem) {
+  .span-3,
+  .span-4 { grid-column: span 6; }
+
+  .span-5,
+  .span-6,
+  .span-7,
+  .span-8,
+  .span-10 { grid-column: span 12; }
+}
+
+/* Subgrid alignment — an item that spans N columns of the parent
+   grid re-exposes those same N tracks to its own children, so a
+   nested span-4 lines up with the outer grid's actual columns
+   instead of splitting evenly across whatever width the item
+   happens to have. Case studies use this to hang asymmetric groups
+   (headings, statements, image pairs) off the same 12-column
+   measure — an item needs both a span-N class (its own size) and
+   .align (subgrids its children) to nest correctly. */
+.align {
+  display: grid;
+  grid-template-columns: subgrid;
+  gap: inherit;
+}
+
+/* Empty spacer elements shift a sibling into a later column by
+   occupying the columns before it (see case-study markup). Once
+   the grid collapses below desktop width they have no job left —
+   left unhidden they'd survive as zero-height rows that still eat
+   a row-gap each, stacking up stray whitespace down the page. */
+@media (max-width: 64rem) {
+  :is(.grid, .align) > :is(span, div):empty {
+    display: none;
+  }
+}
+
+/* Single column on mobile — twelve tracks with 48px gaps
+   exceed the viewport and force horizontal overflow. */
+@media (max-width: 47.9375rem) {
+  .container {
+    padding-inline: var(--space-md);
+  }
+
+  .section {
+    padding-block: var(--space-md);
+  }
+
+  .grid,
+  .align {
+    grid-template-columns: 1fr;
+    gap: var(--space-grid-row-gap);
+  }
+
+  .grid > *,
+  .align > * {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Vertical rhythm — stack utilities on the 8px scale. */
+.stack > * + * {
+  margin-block-start: var(--space-stack-default);
+}
+
+.stack--tight > * + * {
+  margin-block-start: var(--space-stack-tight);
+}
+
+/* The stack spaces prose, and a button is not prose. A bordered control
+   sitting on the tight 8px step reads as attached to the paragraph above
+   it, so it takes the next step up. Stated once here rather than as a
+   margin on each button that ends a stack. */
+.stack > .button,
+.stack--tight > .button {
+  margin-block-start: var(--space-md);
+}

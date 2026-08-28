@@ -1,0 +1,15 @@
+# ---- OS / editor noise ----
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# ---- Dependencies ----
+node_modules/
+
+# ---- Build noise ----
+*.css.map
+*.log
+
+# NOTE: dist/ is deliberately NOT ignored. Consumers install this package
+# straight from a GitHub tag, where npm runs no build — so the compiled
+# tokens have to be committed or they arrive empty.

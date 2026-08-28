@@ -1,0 +1,163 @@
+/* ============================================================
+   molecules/stat.css — proof numbers in a full-width band
+   The band background bleeds full width; the stats sit on the
+   page grid (.container > .grid, span-3 each), so the first
+   number shares the hero's left edge. Dividers center in the
+   column gap.
+
+   The band opens on the brand's double rule, the same two-color
+   bar that underlines the name on the resume: one continuous
+   bar whose colour changes on a column boundary rather than at
+   an arbitrary point.
+
+   The rule carries its own copy of the 12-column definition so
+   the segments stay on the columns at every width. The content
+   grid below it collapses on small screens; the rule must not,
+   or the bar would break into stacked pieces.
+
+   The colour changes on the divider between the first and second
+   stat. Both segments reach half a column gap past their own
+   track edge, which is the same half-gap offset the dividers
+   themselves use below, so the handoff lands on that vertical
+   line by construction rather than by coincidence. Change the
+   gap token and all three stay together.
+   ============================================================ */
+
+.stat-band {
+  background: var(--stat-color-background);
+  border-block-end: var(--border-width-hairline) solid var(--stat-color-divider);
+  /* Contains the rule's bleed. `clip` rather than `hidden` so this
+     never becomes a scroll container. */
+  overflow-x: clip;
+  /* Sibling of the hero in .home-fold (see index-hero.css): stays
+     its natural height and never gets compressed, however tight
+     the fold's flex column gets. */
+  flex-shrink: 0;
+}
+
+.stat-band__rule {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--space-grid-column-gap);
+}
+
+/* The segments are rules, so they are drawn as borders rather than
+   boxes given a height. */
+.stat-band__rule-lead {
+  grid-column: span 3;
+  margin-inline-end: calc(-0.5 * var(--space-grid-column-gap));
+  border-block-start: var(--stat-size-rule) solid var(--stat-color-rule-lead);
+}
+
+.stat-band__rule-trail {
+  grid-column: 4 / -1;
+  margin-inline-start: calc(-0.5 * var(--space-grid-column-gap));
+  border-block-start: var(--stat-size-rule) solid var(--stat-color-rule-trail);
+}
+
+/* The bar runs the full width of the device while the stats stay on
+   the grid. Each segment paints outward past the container edge with
+   a pseudo-element; the band clips the excess. The handoff is
+   untouched by this, so the colour still changes on the column
+   divider no matter how wide the viewport is. */
+.stat-band__rule-lead,
+.stat-band__rule-trail {
+  position: relative;
+}
+
+.stat-band__rule-lead::before,
+.stat-band__rule-trail::after {
+  content: '';
+  position: absolute;
+  inset-block-start: -.125rem;
+  inline-size: 100vw;
+}
+
+.stat-band__rule-lead::before {
+  inset-inline-end: 100%;
+  border-block-start: var(--stat-size-rule) solid var(--stat-color-rule-lead);
+}
+
+.stat-band__rule-trail::after {
+  inset-inline-start: 100%;
+  border-block-start: var(--stat-size-rule) solid var(--stat-color-rule-trail);
+}
+
+.stat {
+  padding-block: var(--stat-space-inset-y);
+}
+
+.stat + .stat {
+  border-inline-start: var(--border-width-hairline) solid var(--stat-color-divider);
+  margin-inline-start: calc(-0.5 * var(--space-grid-column-gap));
+  padding-inline-start: calc(0.5 * var(--space-grid-column-gap));
+}
+
+.stat__value {
+  font-family: var(--text-family-display);
+  font-size: var(--text-size-heading-lg);
+  font-weight: var(--text-weight-heading);
+  line-height: var(--text-line-height-heading-lg);
+  color: var(--stat-color-value);
+}
+
+.stat__label {
+  margin-block-start: var(--space-xs);
+  font-size: var(--text-size-ui);
+  line-height: var(--text-line-height-ui);
+  color: var(--stat-color-label);
+}
+
+/* The grid collapses span-3 to half width at tablet (2x2): only the
+   right column keeps its divider, and the second row gains a top rule.
+   The divider moves to the 6/7 boundary, so the rule's handoff moves
+   with it — the bar tracks the columns at every breakpoint. */
+@media (max-width: 64rem) {
+  .stat:nth-child(odd) {
+    border-inline-start: none;
+    margin-inline-start: 0;
+    padding-inline-start: 0;
+  }
+
+  .stat:nth-child(n + 3) {
+    border-block-start: var(--border-width-hairline) solid var(--stat-color-divider);
+  }
+
+  .stat-band__rule-lead {
+    grid-column: span 6;
+  }
+
+  .stat-band__rule-trail {
+    grid-column: 7 / -1;
+  }
+}
+
+/* Single column on mobile: row rules only, and no vertical divider
+   left for the brand rule to align to. The rule drops to a plain
+   half-and-half split with no gutters: below roughly 624px the
+   eleven column gaps alone exceed the content width, and keeping
+   the twelve-column definition would push the bar past the right
+   gutter. */
+@media (max-width: 47.9375rem) {
+  .stat + .stat {
+    border-inline-start: none;
+    margin-inline-start: 0;
+    padding-inline-start: 0;
+    border-block-start: var(--border-width-hairline) solid var(--stat-color-divider);
+  }
+
+  .stat-band__rule {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0;
+  }
+
+  .stat-band__rule-lead {
+    grid-column: 1;
+    margin-inline-end: 0;
+  }
+
+  .stat-band__rule-trail {
+    grid-column: 2;
+    margin-inline-start: 0;
+  }
+}
