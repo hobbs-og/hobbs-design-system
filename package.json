@@ -1,6 +1,6 @@
 {
   "name": "@hobbs-og/design-system",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Design tokens and CSS primitives behind hobbs.design \u2014 the baseline layer for any product built on it.",
   "type": "module",
   "license": "MIT",
