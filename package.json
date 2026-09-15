@@ -1,7 +1,7 @@
 {
   "name": "@hobbs-og/design-system",
   "version": "1.2.0",
-  "description": "Design tokens and CSS primitives behind hobbs.design \u2014 the baseline layer for any product built on it.",
+  "description": "Design tokens and CSS primitives behind hobbs.design — the baseline layer for any product built on it.",
   "type": "module",
   "license": "MIT",
   "author": "Mark Hobbs <mark@hobbs.design>",
@@ -41,6 +41,7 @@
   "scripts": {
     "build": "npm run build:tokens",
     "build:tokens": "style-dictionary build --config style-dictionary.config.mjs",
+    "build:reference-palette": "node tools/build-reference-palette.mjs",
     "watch:tokens": "style-dictionary build --config style-dictionary.config.mjs --watch",
     "prepack": "npm run build:tokens"
   },
@@ -48,6 +49,7 @@
     "bootstrap-icons": "^1.13.1"
   },
   "devDependencies": {
+    "@material/material-color-utilities": "^0.4.0",
     "style-dictionary": "^4.3.0"
   },
   "keywords": [
