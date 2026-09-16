@@ -70,19 +70,29 @@ Typed via `dist/tokens.d.ts`.
 
 ---
 
-## The typeface caveat
+## Typefaces
 
-**Neue Haas Grotesk is not bundled.** It is a licensed Adobe Fonts (Typekit)
-face and cannot be redistributed. The tokens name it; loading it is yours.
+**Every face is bundled.** There is no font service to wire and no kit id.
 
-Either load your own kit before the stylesheet:
+- **Inter** — base and display. Self-hosted variable font (weights 100–900,
+  optical size 14–32), latin and latin-ext, from `assets/fonts/inter/`.
+  With `font-optical-sizing: auto` (the default), text at 32px and up draws
+  Inter's display cut and body sizes its text cut, so one family does the job
+  the base/display pair used to.
+- **JetBrains Mono** — mono. Latin subset, weight 400, 21KB, from
+  `assets/fonts/`. Chosen by measurement: at the same nominal size its x-height
+  is 1.008 and cap-height 1.003 of Inter's, so inline `<code>` needs no size
+  correction to sit inside a sentence.
 
-```html
-<link rel="stylesheet" href="https://use.typekit.net/YOUR_KIT.css">
-<link rel="stylesheet" href="/vendor/design-system/styles/index.css">
-```
+Both are under the SIL Open Font License; each licence sits beside its files.
+The OFL permits embedding in generated documents such as PDFs.
 
-…or override the family tokens after it:
+Neue Haas Grotesk (Adobe Fonts) was the face through 1.2.0. It was removed in
+1.3.0: a hosted kit meant a third-party request on every page, a CSP
+exception, and a network wait inside headless PDF rendering.
+
+To use a different face in a product, override the family tokens after the
+stylesheet — and self-host it:
 
 ```css
 :root {
@@ -90,12 +100,6 @@ Either load your own kit before the stylesheet:
   --text-family-display: 'Your Face', system-ui, sans-serif;
 }
 ```
-
-The mono **is** bundled — JetBrains Mono, latin subset, weight 400, 21KB, under
-the SIL Open Font License. The licence sits beside the file it covers at
-`assets/fonts/OFL.txt`. It was chosen by measurement, not taste: at the same
-nominal size its x-height is 1.02 and cap-height 0.98 of Neue Haas Grotesk
-Text, so inline `<code>` needs no size correction to sit inside a sentence.
 
 ---
 

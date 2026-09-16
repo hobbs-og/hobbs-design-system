@@ -87,9 +87,9 @@ h4 {
 /* Inline code — a token name or a filename sitting inside a
    sentence. No size step: it runs at the size of the prose around
    it. The old rule shrank it to 0.875em on the assumption that a
-   monospace reads large beside Neue Haas, but measured against the
-   face this stack actually resolves to, the x-heights sit within
-   1.3% of each other at the same nominal size. The step-down wasn't
+   monospace reads large beside the body face, but measured against
+   the face this stack actually resolves to — Inter, since 1.3.0 —
+   the x-heights sit within 1% of each other at the same nominal size. The step-down wasn't
    correcting anything, it was just setting code smaller than its
    own sentence.
 

@@ -1,8 +1,8 @@
 {
   "typography": {
     "font-family": {
-      "display": { "$value": "neue-haas-grotesk-display, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif", "$type": "fontFamily" },
-      "base":    { "$value": "neue-haas-grotesk-text, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif", "$type": "fontFamily" },
+      "display": { "$value": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif", "$type": "fontFamily" },
+      "base":    { "$value": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif", "$type": "fontFamily" },
       "mono":    { "$value": "'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace", "$type": "fontFamily" }
     },
     "font-size": {

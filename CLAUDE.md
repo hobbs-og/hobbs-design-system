@@ -58,10 +58,12 @@ reaches `../../assets/fonts/`, and `styles/index.css` reaches `../dist/`.
    silently reverted by the next vendor run. Fix it upstream, tag, re-install.
 3. **Never fork to change a value.** Change the token, or add the missing
    semantic role. A fork is how one system becomes four.
-4. **Neue Haas Grotesk is not bundled** — it is a licensed Typekit face and
-   cannot be redistributed. Consumers load their own kit or override
-   `--text-family-base` / `--text-family-display`. JetBrains Mono *is* bundled,
-   under the OFL that sits beside it in `assets/fonts/`.
+4. **Every face is bundled, and none comes from a font service.** Inter (base
+   and display) and JetBrains Mono (mono) are self-hosted under the SIL OFL,
+   licences beside the files in `assets/fonts/`. Never reintroduce a hosted
+   kit (Typekit, Google Fonts): it is a third-party request on every page, a
+   CSP exception, and a network wait inside PDF rendering. Neue Haas Grotesk
+   was removed in 1.3.0 for exactly those reasons.
 5. **Semver is against the public surface**: custom property names, class
    names, JS export names. Renaming or removing any of those is a major.
 
@@ -371,5 +373,3 @@ are breaking changes to the public surface, and design decisions are his.
 - **`--xray-color-*` tokens ship here** but the `.xray` CSS that uses them
   stayed in the portfolio. Either the tokens should follow, or the overlay
   should come here as a dev utility.
-- The Typekit dependency means a fresh consumer sees fallback sans until they
-  wire a kit. There is no build-time warning for this.

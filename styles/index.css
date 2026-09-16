@@ -24,9 +24,9 @@
    edit files in here — a fork is a fork. To change a value, change
    the token; to add a role the semantic layer lacks, add the role.
 
-   Neue Haas Grotesk is NOT bundled: it is a licensed Typekit face.
-   Load your own kit before this file, or override the family tokens
-   (--text-family-base / --text-family-display). See README.
+   Every face is bundled — Inter (base and display) and JetBrains
+   Mono — under the SIL OFL, declared in base/fonts.css. No font
+   service to wire.
    ============================================================ */
 
 @import url('../dist/tokens.css');

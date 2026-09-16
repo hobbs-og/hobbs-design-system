@@ -291,9 +291,9 @@ export const breakpointSm = "768rem";
 export const breakpointMd = "1024rem";
 export const breakpointLg = "1280rem";
 export const typographyFontFamilyDisplay =
-  "neue-haas-grotesk-display, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+  "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 export const typographyFontFamilyBase =
-  "neue-haas-grotesk-text, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+  "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 export const typographyFontFamilyMono =
   "'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace";
 export const typographyFontSize12 = "12rem";
@@ -333,9 +333,9 @@ export const textColorLink = "#c11406";
 export const textColorLinkHover = "#a20404";
 export const textColorLinkLarge = "#e12a09";
 export const textFamilyDisplay =
-  "neue-haas-grotesk-display, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+  "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 export const textFamilyBase =
-  "neue-haas-grotesk-text, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+  "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 export const textFamilyMono =
   "'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace";
 export const textSizeDisplay = "80rem";

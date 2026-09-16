@@ -36,19 +36,18 @@ or px value.** `color.brand.primary.500` is a red; it doesn't know it's a link.
   (success/warning/error) triads
 - `spacing.json` — a **strict 8px scale** (8–160, no 4s or 12s), gaps,
   container, stroke widths, radii, breakpoints
-- `typography.json` — Neue Haas Grotesk stacks, font sizes, weights,
+- `typography.json` — Inter and JetBrains Mono stacks, font sizes, weights,
   line heights (all 8px multiples), letter spacing (0 — tracking is never
   manipulated)
 
-Two families, two delivery routes. Neue Haas Grotesk is served by Typekit.
-The mono is **JetBrains Mono, self-hosted** from `assets/fonts/`
-(latin subset, weight 400, 21KB, OFL — the licence sits beside the file),
-declared in `styles/base/fonts.css`. It was picked by measurement: at
-the same nominal size its x-height is 1.02 and its cap-height 0.98 of Neue
-Haas Grotesk Text, the closest of the candidates tested, so inline `<code>`
-needs no size correction to sit inside a sentence. Before this it was named
-in the token but never loaded, which meant the mono rendered as whatever
-the visitor's OS supplied.
+Both families are **self-hosted** and declared in `styles/base/fonts.css`, each
+under the SIL OFL with its licence beside the files. **Inter** (base and
+display) is one variable font per subset — weights 100–900 and an optical-size
+axis of 14–32, so large text draws the display cut automatically. **JetBrains
+Mono** (latin, weight 400, 21KB) was picked by measurement: at the same nominal
+size its x-height is 1.008 and its cap-height 1.003 of Inter's, so inline
+`<code>` needs no size correction to sit inside a sentence. Neue Haas Grotesk,
+served by Typekit, was the base face through 1.2.0.
 
 Dimensions compile to rem (÷16) so user font-size preferences scale the UI.
 Breakpoints stay px: media queries can't read custom properties, so those

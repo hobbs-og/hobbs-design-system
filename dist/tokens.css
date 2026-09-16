@@ -248,8 +248,8 @@
   --breakpoint-sm: 48rem;
   --breakpoint-md: 64rem;
   --breakpoint-lg: 80rem;
-  --typography-font-family-display: neue-haas-grotesk-display, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --typography-font-family-base: neue-haas-grotesk-text, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --typography-font-family-display: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --typography-font-family-base: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --typography-font-family-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --typography-font-size-12: 0.75rem;
   --typography-font-size-14: 0.875rem;
