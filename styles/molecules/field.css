@@ -10,6 +10,14 @@
               aria-describedby="email-error">
        <p class="field__error" id="email-error">Enter an email…</p>
      </div>
+
+   A select always sits in .field__select with its arrow icon:
+     <div class="field__select">
+       <select class="field__control" id="state">…</select>
+       <svg class="icon" aria-hidden="true">
+         <use href="/icons.svg#bi-chevron-down"></use>
+       </svg>
+     </div>
    ============================================================ */
 
 .field {
@@ -40,6 +48,60 @@
   border-radius: var(--field-radius-default);
   font-size: var(--text-size-body);
   line-height: var(--text-line-height-body);
+}
+
+/* ---- iOS: native controls that ignore the box ----------------------
+   iOS Safari (and every iOS browser, which all run WebKit) draws date,
+   time and select controls natively and sizes them itself: a date input
+   ignores width: 100% and runs past its container, and a select ignores
+   min-height and padding and renders short. Reported on an iPhone in
+   estimates-etc after v1.3.1. The documented fix is to switch the native
+   appearance off; the box model then applies like any other input.
+   Refs: github.com/twbs/bootstrap/issues/34433 and
+   gomakethings.com/articles/fixing-temporal-input-styling-in-safari */
+
+.field__control:is([type='date'], [type='time'], [type='datetime-local'], [type='month'], [type='week']) {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* With appearance off, iOS centres the value; fields read from the start. */
+.field__control::-webkit-date-and-time-value {
+  text-align: start;
+}
+
+/* A select loses its arrow with its native appearance, so the arrow is a
+   sprite icon laid over the control's end. Both occupy the same single
+   grid cell — no positioning, no z-index: the icon is the later sibling,
+   so it paints on top, and pointer-events lets taps reach the select. */
+.field__select {
+  display: grid;
+  /* One track that can shrink below the select's widest option — an
+     automatic track sizes to it, and a long client name widened the
+     field past its card (measured: 287px in a 222px field at 320px). */
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+}
+
+.field__select > .field__control,
+.field__select > .icon {
+  grid-area: 1 / 1;
+}
+
+.field__select > .field__control {
+  -webkit-appearance: none;
+  appearance: none;
+  /* Inset, the 1em icon, and the inset again — at body size, one 48px
+     step of the grid. The value never runs under the arrow. */
+  padding-inline-end: var(--space-xl);
+  cursor: pointer;
+}
+
+.field__select > .icon {
+  justify-self: end;
+  margin-inline-end: var(--field-space-inset-x);
+  color: var(--field-color-text);
+  pointer-events: none;
 }
 
 textarea.field__control {

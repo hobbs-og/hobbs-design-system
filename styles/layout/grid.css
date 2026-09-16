@@ -13,17 +13,18 @@
   padding-block: var(--space-section-y);
 }
 
-/* minmax(0, 1fr), never bare 1fr. A bare 1fr track has an automatic
-   minimum — the min-content width of whatever sits in it — so one wide
-   descendant (a table, a long unbroken string, a date input) widens
-   its track, the grid, and the page. Measured in estimates-etc: a
-   598px table inside a collapsed grid pushed a 393px phone layout to
-   672px, and every form field in that column ran off-screen. With a
-   zero minimum the track holds the grid's width and wide content
-   overflows its own box, where .table-scroll and friends handle it. */
+/* The twelve tracks keep bare 1fr, content-sized minimum and all.
+   1.3.1 made them minmax(0, 1fr) and it was reverted in 1.3.2: a grid
+   child with no .span-N class takes one track, and consumers have such
+   children — the automatic minimum had been widening those tracks to
+   fit, and at a zero minimum they rendered 47px wide (estimates-etc
+   Settings, client, dashboard, reports and mileage screens, in
+   production). The collapsed single track below keeps the fix, which
+   is where the overflow was. Give every grid child a span; then this
+   can be minmax(0, 1fr) too. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-columns: repeat(12, 1fr);
   gap: var(--space-grid-row-gap) var(--space-grid-column-gap);
 }
 
@@ -105,6 +106,12 @@
     padding-block: var(--space-md);
   }
 
+  /* minmax(0, 1fr), never bare 1fr, for the single track. A bare 1fr
+     has an automatic minimum — the min-content width of what sits in
+     it — so one wide descendant (a table, a long unbroken string, a
+     date input) widened the track, the grid and the page. Measured in
+     estimates-etc: a 598px table pushed a 393px phone layout to 672px,
+     and every form field in that column ran off-screen. */
   .grid,
   .align {
     grid-template-columns: minmax(0, 1fr);

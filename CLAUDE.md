@@ -245,7 +245,11 @@ These are encoded in the values, not left to the consumer:
 `icon.css`, `media.css` (`.img-frame`).
 
 **Molecules** — `field.css`, `stat.css`, `section-header.css`,
-`link-list.css`.
+`link-list.css`. A `<select>` always sits in `.field__select` with a
+`bi-chevron-down` sprite icon after it (markup in `field.css`): iOS ignores a
+native select's height, so the system turns native appearance off and draws
+the arrow itself. Date and time inputs lose native appearance for the same
+reason — iOS otherwise ignores their width.
 
 **Layout** — `grid.css`: `.container`, `.section`, `.grid` (12-col),
 `.grid--baseline`, `.align` (subgrid), `.span-1` through `.span-12` (every
