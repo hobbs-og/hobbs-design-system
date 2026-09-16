@@ -13,9 +13,17 @@
   padding-block: var(--space-section-y);
 }
 
+/* minmax(0, 1fr), never bare 1fr. A bare 1fr track has an automatic
+   minimum — the min-content width of whatever sits in it — so one wide
+   descendant (a table, a long unbroken string, a date input) widens
+   its track, the grid, and the page. Measured in estimates-etc: a
+   598px table inside a collapsed grid pushed a 393px phone layout to
+   672px, and every form field in that column ran off-screen. With a
+   zero minimum the track holds the grid's width and wide content
+   overflows its own box, where .table-scroll and friends handle it. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: var(--space-grid-row-gap) var(--space-grid-column-gap);
 }
 
@@ -99,7 +107,7 @@
 
   .grid,
   .align {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-grid-row-gap);
   }
 
